@@ -20,3 +20,11 @@ Using [The Movie DB API](https://www.themoviedb.org/)
 - [x] TV Show Detail
 - [x] Movie Detail
 - [x] Search (Movie, TV)
+
+## Challenge
+- [] Youtube Link
+- [] IMDB Link
+- [] Production Companies
+- [] Collection (Movie)
+- [] Seasons (TV)
+- [] Spoken Language
