@@ -2,6 +2,8 @@
 
 Learning React and ES6 by building a Movie Search App.
 
+Try it on [netlify](https://laughing-hugle-a74dee.netlify.com/#/)
+
 ## Screen
 
 - [X] Home
