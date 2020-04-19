@@ -18,7 +18,7 @@ const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(${props => props.bgImage});
+  background-image: url(${(props) => props.bgImage});
   background-position: center center;
   background-size: cover;
   filter: blur(3px);
@@ -35,7 +35,7 @@ const Content = styled.div`
 `;
 
 const Cover = styled.div`
-  background-image: url(${props => props.bgImage});
+  background-image: url(${(props) => props.bgImage});
   background-position: center center;
   background-size: cover;
   width: 30%;
@@ -61,12 +61,19 @@ const Item = styled.span``;
 const Divider = styled.span`
   margin: 0 10px;
 `;
-
 const Overview = styled.p`
   font-size: 12px;
   opacity: 0.7;
   line-height: 1.5;
   width: 50%;
+`;
+const IMDBLink = styled.a`
+  background-color: #e8b708;
+  font-family: "Verdana", Arial, sans-serif;
+  font-weight: 600;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
 `;
 
 const DetailPresenter = ({ result, loading, error }) =>
@@ -123,6 +130,19 @@ const DetailPresenter = ({ result, loading, error }) =>
                     : `${genre.name} / `
                 )}
             </Item>
+            {result.imdb_id && (
+              <>
+                <Divider>•</Divider>
+                <Item>
+                  <IMDBLink
+                    href={`https://www.imdb.com/title/${result.imdb_id}`}
+                    target="_blank"
+                  >
+                    IMDb
+                  </IMDBLink>
+                </Item>
+              </>
+            )}
           </ItemContainer>
           <Overview>{result.overview}</Overview>
         </Data>
@@ -133,7 +153,7 @@ const DetailPresenter = ({ result, loading, error }) =>
 DetailPresenter.propTypes = {
   result: PropTypes.object,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  error: PropTypes.string,
 };
 
 export default DetailPresenter;

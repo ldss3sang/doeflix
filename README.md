@@ -24,9 +24,9 @@ Using [The Movie DB API](https://www.themoviedb.org/)
 - [x] Search (Movie, TV)
 
 ## Challenge
-- [] Youtube Link
-- [] IMDB Link
+- [x] IMDB Link
+- [] Tabs insside of Movie / Show Details (YouTube)
 - [] Production Companies
 - [] Collection (Movie)
-- [] Seasons (TV)
+- [] Seasons and creators (TV)
 - [] Spoken Language
