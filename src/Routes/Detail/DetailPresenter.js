@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
@@ -76,8 +76,98 @@ const IMDBLink = styled.a`
   border-radius: 5px;
 `;
 
-const DetailPresenter = ({ result, loading, error }) =>
-  loading ? (
+const Extra = styled.div`
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+`;
+
+const TabList = styled.ul`
+  display: flex;
+  flex-direction: row;
+`;
+
+const TabItem = styled.li`
+  background-color: grey;
+  padding: 10px;
+  opacity: ${(props) => (props.active ? 1 : 0.5)};
+`;
+
+const TabInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: grey;
+  padding: 10px;
+  width: 50%;
+  overflow-x: auto;
+  box-sizing: border-box;
+  text-align: center;
+  height: 400px;
+`;
+
+const Video = styled.iframe`
+  margin: 10px;
+  height: -webkit-fill-available;
+`;
+
+const VideoContainer = styled.div`
+  width: 100%;
+  margin: 20px;
+`;
+
+const ImageCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 15px;
+  width: 100%;
+  margin: 10px;
+`;
+const ImageContainer = styled.div`
+  width: 200px;
+  height: 100px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+const ImageName = styled.div`
+  width: 220px;
+`;
+
+const Production = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProductionItem = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ProductionTitle = styled.div`
+  margin: 10px 20px;
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const CountryName = styled.div`
+  margin: 5px 20px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+`;
+
+const DetailPresenter = ({ result, loading, error }) => {
+  const [tab, setTab] = useState("video");
+  return loading ? (
     <>
       <Helmet>
         <title>Loading | Doeflix</title>
@@ -145,10 +235,104 @@ const DetailPresenter = ({ result, loading, error }) =>
             )}
           </ItemContainer>
           <Overview>{result.overview}</Overview>
+          <Extra>
+            <TabList>
+              <TabItem onClick={() => setTab("video")} active={tab === "video"}>
+                Video
+              </TabItem>
+              <TabItem
+                onClick={() => setTab("production")}
+                active={tab === "production"}
+              >
+                Production
+              </TabItem>
+              {result.seasons && (
+                <TabItem
+                  onClick={() => setTab("seasons")}
+                  active={tab === "seasons"}
+                >
+                  Seasons
+                </TabItem>
+              )}
+            </TabList>
+            <TabInfo>
+              {tab === "video" &&
+                result.videos.results.map((video) => (
+                  <VideoContainer>
+                    <Video
+                      key={video.id}
+                      title={video.name}
+                      src={`http://www.youtube.com/embed/${video.key}`}
+                    ></Video>
+                  </VideoContainer>
+                ))}
+              {tab === "production" && (
+                <Production>
+                  {result.production_companies &&
+                    result.production_companies.length > 0 && (
+                      <>
+                        <ProductionTitle>Companies:</ProductionTitle>
+                        <ProductionItem>
+                          {result.production_companies.map((company) => (
+                            <ImageCard>
+                              <ImageContainer>
+                                <Image
+                                  src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
+                                  alt={company.name}
+                                  onError={(event) =>
+                                    (event.currentTarget.src =
+                                      "https://dummyimage.com/600x400/000/ffffff.png&text=Image+Not+Found")
+                                  }
+                                />
+                              </ImageContainer>
+                              <ImageName>{company.name}</ImageName>
+                            </ImageCard>
+                          ))}
+                        </ProductionItem>
+                      </>
+                    )}
+                  {result.production_countries &&
+                    result.production_countries.length > 0 && (
+                      <>
+                        <ProductionTitle>Countries:</ProductionTitle>
+                        <ProductionItem>
+                          {result.production_countries.map((country) => (
+                            <CountryName>
+                              <img
+                                src={`https://www.countryflags.io/${country.iso_3166_1}/shiny/64.png`}
+                                alt={country.name}
+                              />
+                              {country.name}
+                            </CountryName>
+                          ))}
+                        </ProductionItem>
+                      </>
+                    )}
+                </Production>
+              )}
+              {tab === "seasons" &&
+                result.seasons.map((season) => (
+                  <ImageCard>
+                    <ImageContainer>
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
+                        alt={season.name}
+                        onError={(event) =>
+                          (event.currentTarget.src =
+                            "https://dummyimage.com/600x400/000/ffffff.png&text=Image+Not+Found")
+                        }
+                      />
+                    </ImageContainer>
+                    <ImageName>{season.name}</ImageName>
+                  </ImageCard>
+                ))}
+            </TabInfo>
+          </Extra>
         </Data>
       </Content>
     </Container>
   );
+};
 
 DetailPresenter.propTypes = {
   result: PropTypes.object,
