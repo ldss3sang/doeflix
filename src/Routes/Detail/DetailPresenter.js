@@ -80,6 +80,7 @@ const Extra = styled.div`
   opacity: 0.7;
   width: 100%;
   height: 100%;
+  margin-top: 10px;
 `;
 
 const TabList = styled.ul`
@@ -98,11 +99,11 @@ const TabInfo = styled.div`
   flex-direction: row;
   background-color: grey;
   padding: 10px;
-  width: 50%;
+  width: 100%;
   overflow-x: auto;
   box-sizing: border-box;
   text-align: center;
-  height: 400px;
+  height: 380px;
 `;
 
 const Video = styled.iframe`
@@ -125,12 +126,22 @@ const ImageCard = styled.div`
 `;
 const ImageContainer = styled.div`
   width: 200px;
+  height: -webkit-fill-available;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CompanyImageContainer = styled.div`
+  width: 200px;
   height: 100px;
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
 const Image = styled.img`
   width: 100%;
   height: 100%;
@@ -151,14 +162,14 @@ const ProductionItem = styled.div`
 `;
 
 const ProductionTitle = styled.div`
-  margin: 10px 20px;
+  margin: 5px 20px;
   text-align: left;
   font-size: 20px;
   font-weight: bold;
 `;
 
 const CountryName = styled.div`
-  margin: 5px 20px;
+  margin: 0px 20px;
   font-size: 15px;
   display: flex;
   flex-direction: column;
@@ -262,7 +273,7 @@ const DetailPresenter = ({ result, loading, error }) => {
                     <Video
                       key={video.id}
                       title={video.name}
-                      src={`http://www.youtube.com/embed/${video.key}`}
+                      src={`https://www.youtube.com/embed/${video.key}`}
                     ></Video>
                   </VideoContainer>
                 ))}
@@ -275,7 +286,7 @@ const DetailPresenter = ({ result, loading, error }) => {
                         <ProductionItem>
                           {result.production_companies.map((company) => (
                             <ImageCard>
-                              <ImageContainer>
+                              <CompanyImageContainer>
                                 <Image
                                   src={`https://image.tmdb.org/t/p/w500${company.logo_path}`}
                                   alt={company.name}
@@ -284,7 +295,7 @@ const DetailPresenter = ({ result, loading, error }) => {
                                       "https://dummyimage.com/600x400/000/ffffff.png&text=Image+Not+Found")
                                   }
                                 />
-                              </ImageContainer>
+                              </CompanyImageContainer>
                               <ImageName>{company.name}</ImageName>
                             </ImageCard>
                           ))}
@@ -298,10 +309,12 @@ const DetailPresenter = ({ result, loading, error }) => {
                         <ProductionItem>
                           {result.production_countries.map((country) => (
                             <CountryName>
-                              <img
-                                src={`https://www.countryflags.io/${country.iso_3166_1}/shiny/64.png`}
-                                alt={country.name}
-                              />
+                              <div>
+                                <img
+                                  src={`https://www.countryflags.io/${country.iso_3166_1}/shiny/64.png`}
+                                  alt={country.name}
+                                />
+                              </div>
                               {country.name}
                             </CountryName>
                           ))}
